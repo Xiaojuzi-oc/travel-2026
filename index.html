@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neil 2026 · 夏季亚澳之旅</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Source+Sans+Pro:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
   <style>
-    /* ═══════════════════════════════════════
-       色彩规范（FT · 三文鱼粉系）
-    ═══════════════════════════════════════ */
     :root {
       --coral:      #FF8C69;
       --coral-light:#FFB4A8;
@@ -20,15 +16,11 @@
       --text:       #2A2A2A;
       --text-muted: #6B6B6B;
       --text-dim:   #ABABAB;
-      --sz:         #FF8C69;  /* 苏州 */
-      --hz:         #E8A87C;  /* 杭州 */
-      --mo:         #85C1E9;  /* 澳门 */
-      --kk:         #48C9B0;  /* 亚庇 */
+      --sz:         #FF8C69;
+      --hz:         #E8A87C;
+      --mo:         #85C1E9;
+      --kk:         #48C9B0;
     }
-
-    /* ═══════════════════════════════════════
-       重置 & 基线
-    ═══════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -39,9 +31,7 @@
       line-height: 1.7;
     }
 
-    /* ═══════════════════════════════════════
-       通用
-    ═══════════════════════════════════════ */
+    /* ── 通用 ── */
     .section-label {
       font-family: 'Source Sans Pro', sans-serif;
       font-size: 11px;
@@ -58,16 +48,10 @@
       color: var(--text);
       margin-bottom: 32px;
     }
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
     section { padding: 60px 0; }
 
-    /* ═══════════════════════════════════════
-       HEADER
-    ═══════════════════════════════════════ */
+    /* ── HEADER ── */
     header {
       background: var(--card);
       border-bottom: 1px solid var(--border);
@@ -81,19 +65,18 @@
       padding: 0 24px;
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 24px;
       height: 64px;
     }
     .site-title {
       font-family: 'Playfair Display', 'Noto Serif SC', serif;
       font-size: 20px;
       font-weight: 700;
-      color: var(--text);
       white-space: nowrap;
     }
     nav.header-nav {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       flex: 1;
     }
     nav.header-nav a {
@@ -104,11 +87,7 @@
       transition: color 0.2s;
     }
     nav.header-nav a:hover { color: var(--coral); }
-    .header-summary {
-      display: flex;
-      gap: 16px;
-      margin-left: auto;
-    }
+    .header-summary { display: flex; gap: 10px; margin-left: auto; }
     .summary-pill {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -120,14 +99,8 @@
     }
     .summary-pill strong { color: var(--text); }
 
-    /* ═══════════════════════════════════════
-       HERO
-    ═══════════════════════════════════════ */
-    .hero {
-      background: var(--card);
-      padding: 48px 0 0;
-      text-align: center;
-    }
+    /* ── HERO ── */
+    .hero { background: var(--card); padding: 48px 0 0; text-align: center; }
     .hero-title {
       font-family: 'Playfair Display', 'Noto Serif SC', serif;
       font-size: 48px;
@@ -135,31 +108,36 @@
       margin-bottom: 8px;
     }
     .hero-title span { color: var(--coral); }
-    .hero-sub {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-    }
+    .hero-sub { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; }
+
+    /* 路线芯片 */
     .route-chips {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
-      padding-bottom: 40px;
+      padding: 0 24px 32px;
     }
     .city-chip {
       padding: 6px 18px;
       border-radius: 20px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       color: #fff;
     }
-    .route-arrow {
-      color: var(--text-dim);
-      font-size: 18px;
+    .route-arrow { color: var(--text-dim); font-size: 18px; }
+
+    /* 路线地图（静态SVG） */
+    .route-map {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto 8px;
+      padding: 0 24px;
     }
-    #map-chart { width: 100%; height: 420px; }
+    .route-map svg { width: 100%; height: auto; display: block; }
+
+    /* 地图图例 */
     .map-legend {
       display: flex;
       justify-content: center;
@@ -174,14 +152,9 @@
       font-size: 13px;
       font-weight: 600;
     }
-    .legend-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-    /* ═══════════════════════════════════════
-       STATS
-    ═══════════════════════════════════════ */
+    /* ── STATS（静态无CDN依赖） ── */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -199,13 +172,67 @@
       margin-bottom: 16px;
       color: var(--text);
     }
-    #pie-chart   { width: 100%; height: 280px; }
-    #bar-chart   { width: 100%; height: 280px; }
-    #gantt-chart { width: 100%; height: 160px; }
 
-    /* ═══════════════════════════════════════
-       TIMELINE
-    ═══════════════════════════════════════ */
+    /* 饼图 — CSS实现 */
+    .pie-container { display: flex; align-items: center; gap: 24px; }
+    .pie-chart-css {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--sz) 0deg 45deg,
+        var(--hz) 45deg 90deg,
+        var(--kk) 90deg 252deg,
+        var(--mo) 252deg 360deg
+      );
+      position: relative;
+      flex-shrink: 0;
+    }
+    .pie-chart-css::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: var(--card);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .pie-legend { display: flex; flex-direction: column; gap: 10px; }
+    .pie-legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .pie-legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .pie-legend-label { color: var(--text-muted); }
+    .pie-legend-val { font-weight: 700; margin-left: auto; padding-left: 16px; }
+
+    /* 甘特图 — CSS实现 */
+    .gantt-wrap { overflow-x: auto; }
+    .gantt-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .gantt-table th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 4px 6px;
+      border-bottom: 2px solid var(--border);
+    }
+    .gantt-table td { padding: 5px 6px; vertical-align: middle; }
+    .gantt-day { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .gantt-slots { display: flex; gap: 3px; align-items: center; }
+    .gantt-slot {
+      width: 24px;
+      height: 20px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .slot-yes { background: var(--coral-light); color: var(--coral-dark); }
+    .slot-no { background: var(--bg); color: var(--text-dim); }
+
+    /* ── TIMELINE ── */
     .timeline { position: relative; }
     .timeline::before {
       content: '';
@@ -223,51 +250,32 @@
       margin-bottom: 40px;
       position: relative;
     }
-    .day-date {
-      text-align: right;
-      padding-top: 4px;
-    }
+    .day-date { text-align: right; padding-top: 4px; }
     .day-num {
       font-family: 'Playfair Display', serif;
       font-size: 28px;
       font-weight: 700;
       line-height: 1;
-      color: var(--text);
     }
-    .day-month {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
+    .day-month { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.05em; }
     .day-dot {
       width: 14px;
       height: 14px;
       border-radius: 50%;
       margin-top: 8px;
-      flex-shrink: 0;
       position: relative;
       z-index: 1;
+      border: 2px solid #fff;
     }
-    .day-content { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
-    .day-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .city-tag {
-      padding: 3px 12px;
+    .day-content {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
+      padding: 20px 24px;
     }
-    .day-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 17px;
-      font-weight: 700;
-    }
+    .day-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .city-tag { padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; color: #fff; }
+    .day-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
     .day-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .slot { display: flex; gap: 8px; align-items: flex-start; }
     .slot-icon {
@@ -278,9 +286,8 @@
       flex-shrink: 0;
       background: var(--bg);
     }
-    .slot-text { font-size: 13px; line-height: 1.5; color: var(--text); }
     .slot-time { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; font-weight: 600; }
-    .slot-label { font-size: 11px; color: var(--text-dim); }
+    .slot-text { font-size: 13px; line-height: 1.5; }
     .note-warn {
       margin-top: 12px;
       background: #FFF5F3;
@@ -291,6 +298,7 @@
       color: var(--coral-dark);
     }
     .note-pending {
+      margin-top: 8px;
       background: #F0FFF7;
       border: 1px solid #A8E6CF;
       border-radius: 8px;
@@ -299,9 +307,7 @@
       color: #27AE60;
     }
 
-    /* ═══════════════════════════════════════
-       ACCOMMODATION
-    ═══════════════════════════════════════ */
+    /* ── ACCOMMODATION ── */
     .hotel-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -316,7 +322,7 @@
     }
     .hotel-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .hotel-banner {
-      height: 100px;
+      height: 110px;
       overflow: hidden;
       position: relative;
     }
@@ -324,13 +330,13 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      display: block;
     }
     .hotel-banner::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.35));
+      background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.3));
     }
     .hotel-body { padding: 16px; }
     .hotel-city-tag {
@@ -351,9 +357,7 @@
     .hotel-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
     .hotel-meal { font-size: 12px; color: var(--coral-dark); font-weight: 600; }
 
-    /* ═══════════════════════════════════════
-       TRANSPORT
-    ═══════════════════════════════════════ */
+    /* ── TRANSPORT ── */
     .transport-table { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
     table { width: 100%; border-collapse: collapse; }
     th {
@@ -376,7 +380,6 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #FDFBF9; }
     .flight-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--coral-dark); font-weight: 500; }
-    .transport-mode { display: inline-flex; align-items: center; gap: 4px; }
     .tag {
       display: inline-block;
       padding: 2px 8px;
@@ -389,20 +392,14 @@
     .tag-drive  { background: #F5EEF8; color: #7D3C98; }
     .tag-warn   { background: #FDEDEC; color: #C0392B; }
 
-    /* ═══════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════ */
+    /* ── FOOTER ── */
     footer {
       background: var(--text);
       color: #fff;
       padding: 48px 0;
       margin-top: 40px;
     }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 32px;
-    }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
     footer h4 {
       font-family: 'Source Sans Pro', sans-serif;
       font-size: 11px;
@@ -412,22 +409,15 @@
       color: var(--coral);
       margin-bottom: 12px;
     }
-    footer p, footer li {
-      font-size: 13px;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.8;
-    }
     footer ul { list-style: none; }
+    footer li { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.9; }
     footer a { color: var(--coral-light); text-decoration: none; }
     .copyright { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.4); }
 
-    /* ═══════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════ */
+    /* ── 响应式 ── */
     @media (max-width: 768px) {
       .header-nav { display: none; }
       .hero-title { font-size: 32px; }
-      nav.header-nav { display: none; }
       .stats-grid { grid-template-columns: 1fr; }
       .day-slots { grid-template-columns: 1fr; }
       .timeline::before { left: 72px; }
@@ -438,21 +428,21 @@
     @media (max-width: 480px) {
       .hero-title { font-size: 26px; }
       .hotel-grid { grid-template-columns: 1fr; }
-      .day-block { grid-template-columns: 60px 16px 1fr; }
+      .day-block { grid-template-columns: 60px 16px 1fr; gap: 0 8px; }
       .day-content { padding: 14px 16px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════ HEADER ═══════════════ -->
+<!-- ═══ HEADER ═══ -->
 <header>
   <div class="header-inner">
     <div class="site-title">Neil 2026 · 夏季亚澳之旅</div>
     <nav class="header-nav">
       <a href="#map">路线图</a>
-      <a href="#timeline">时间轴</a>
       <a href="#stats">数据</a>
+      <a href="#timeline">时间轴</a>
       <a href="#accommodation">住宿</a>
       <a href="#transport">交通</a>
     </nav>
@@ -464,7 +454,7 @@
   </div>
 </header>
 
-<!-- ═══════════════ HERO MAP ═══════════════ -->
+<!-- ═══ HERO ═══ -->
 <section class="hero" id="map">
   <div class="container">
     <div class="hero-title">苏州 → 杭州 → <span>澳门</span> → <span style="color:#48C9B0">亚庇</span></div>
@@ -482,18 +472,68 @@
       <span class="route-arrow">→</span>
       <span class="city-chip" style="background:var(--sz)">🏠 苏州</span>
     </div>
-    <div id="map-chart"></div>
+
+    <!-- 静态SVG路线图 -->
+    <div class="route-map">
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+        <!-- 地图底色 -->
+        <rect width="900" height="380" fill="#EFEFEA" rx="12"/>
+        <!-- 中国沿海轮廓（简化） -->
+        <path d="M 80 80 Q 200 60 300 90 Q 400 110 480 140 Q 530 160 560 200 Q 590 240 570 270 Q 550 300 510 310 Q 480 315 450 305" fill="none" stroke="#D5D5D5" stroke-width="1"/>
+        <!-- 亚庇标记 -->
+        <circle cx="700" cy="310" r="6" fill="var(--kk)" opacity="0.2"/>
+        <circle cx="700" cy="310" r="14" fill="none" stroke="var(--kk)" stroke-width="1.5" opacity="0.4"/>
+        <!-- 城市节点 -->
+        <circle cx="140" cy="165" r="10" fill="var(--sz)" stroke="#fff" stroke-width="3"/>
+        <circle cx="230" cy="145" r="10" fill="var(--hz)" stroke="#fff" stroke-width="3"/>
+        <circle cx="460" cy="210" r="10" fill="var(--mo)" stroke="#fff" stroke-width="3"/>
+        <circle cx="700" cy="310" r="12" fill="var(--kk)" stroke="#fff" stroke-width="3"/>
+        <!-- 城市标签 -->
+        <text x="140" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">苏州</text>
+        <text x="230" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">杭州</text>
+        <text x="460" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">澳门</text>
+        <text x="700" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">亚庇</text>
+        <!-- 坐标标注 -->
+        <text x="140" y="188" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">31.3°N</text>
+        <text x="230" y="168" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">30.3°N</text>
+        <text x="460" y="233" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">22.2°N</text>
+        <text x="700" y="333" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">6.0°N</text>
+        <!-- 航线弧线 -->
+        <path d="M 150 165 Q 185 140 230 145" fill="none" stroke="var(--hz)" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 240 148 Q 350 120 458 205" fill="none" stroke="var(--mo)" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 470 213 Q 580 240 698 308" fill="none" stroke="var(--kk)" stroke-width="3" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 710 310 Q 500 200 240 145" fill="none" stroke="var(--hz)" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+        <path d="M 230 148 Q 185 155 140 165" fill="none" stroke="var(--sz)" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+        <!-- 航班动画箭头 -->
+        <polygon points="0,-4 8,0 0,4" fill="var(--kk)" opacity="0.9">
+          <animateMotion dur="3s" repeatCount="indefinite" path="M 470 213 Q 580 240 698 308"/>
+        </polygon>
+        <polygon points="0,-3 6,0 0,3" fill="var(--mo)" opacity="0.8">
+          <animateMotion dur="2.5s" repeatCount="indefinite" path="M 240 148 Q 350 120 458 205"/>
+        </polygon>
+        <!-- 抵达日期标注 -->
+        <rect x="122" y="172" width="36" height="16" rx="8" fill="var(--sz)" opacity="0.15"/>
+        <text x="140" y="184" text-anchor="middle" font-size="10" fill="var(--coral-dark)" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
+        <rect x="212" y="152" width="36" height="16" rx="8" fill="var(--hz)" opacity="0.15"/>
+        <text x="230" y="164" text-anchor="middle" font-size="10" fill="var(--hz)" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
+        <rect x="442" y="217" width="36" height="16" rx="8" fill="var(--mo)" opacity="0.15"/>
+        <text x="460" y="229" text-anchor="middle" font-size="10" fill="var(--mo)" font-weight="700" font-family="'JetBrains Mono',monospace">07-04</text>
+        <rect x="682" y="317" width="36" height="16" rx="8" fill="var(--kk)" opacity="0.15"/>
+        <text x="700" y="329" text-anchor="middle" font-size="10" fill="var(--kk)" font-weight="700" font-family="'JetBrains Mono',monospace">07-06</text>
+      </svg>
+    </div>
+
     <div class="map-legend">
       <span class="legend-item"><span class="legend-dot" style="background:var(--sz)"></span>苏州</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--hz)"></span>杭州</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--mo)"></span>澳门</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--kk)"></span>亚庇</span>
-      <span class="legend-item" style="color:var(--text-muted);font-size:12px;">— 航线</span>
+      <span class="legend-item" style="color:var(--text-muted);font-size:12px;">-- 航线 · 动画飞行动效</span>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ STATS ═══════════════ -->
+<!-- ═══ STATS ═══ -->
 <section id="stats" style="background:var(--card);padding:60px 0;">
   <div class="container">
     <div class="section-label">DATA OVERVIEW</div>
@@ -501,24 +541,118 @@
     <div class="stats-grid">
       <div class="stats-card">
         <h3>城市停留天数</h3>
-        <div id="pie-chart"></div>
+        <div class="pie-container">
+          <div class="pie-chart-css"></div>
+          <div class="pie-legend">
+            <div class="pie-legend-item">
+              <span class="pie-legend-dot" style="background:var(--sz)"></span>
+              <span class="pie-legend-label">苏州/杭州</span>
+              <span class="pie-legend-val">1天</span>
+            </div>
+            <div class="pie-legend-item">
+              <span class="pie-legend-dot" style="background:var(--mo)"></span>
+              <span class="pie-legend-label">澳门</span>
+              <span class="pie-legend-val">2天</span>
+            </div>
+            <div class="pie-legend-item">
+              <span class="pie-legend-dot" style="background:var(--kk)"></span>
+              <span class="pie-legend-label">亚庇</span>
+              <span class="pie-legend-val">4天</span>
+            </div>
+            <div class="pie-legend-item">
+              <span class="pie-legend-dot" style="background:var(--hz)"></span>
+              <span class="pie-legend-label">杭州（返程）</span>
+              <span class="pie-legend-val">1天</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="stats-card">
         <h3>每日行程密度</h3>
-        <div id="gantt-chart"></div>
+        <div class="gantt-wrap">
+          <table class="gantt-table">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>🌅上午</th>
+                <th>☀️中午</th>
+                <th>🌇下午</th>
+                <th>🌙晚上</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="gantt-day">07-03</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-04</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-05</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-06</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-07</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-08</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-09</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+              <tr>
+                <td class="gantt-day">07-10</td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ TIMELINE ═══════════════ -->
+<!-- ═══ TIMELINE ═══ -->
 <section id="timeline" style="padding:60px 0;">
   <div class="container">
     <div class="section-label">ITINERARY</div>
     <div class="section-title">每日行程详解</div>
-
-    <!-- 07-03 -->
     <div class="timeline">
+
+      <!-- 07-03 -->
       <div class="day-block">
         <div class="day-date"><div class="day-num">03</div><div class="day-month">JUL</div></div>
         <div class="day-dot" style="background:var(--sz)"></div>
@@ -563,7 +697,7 @@
             </div>
             <div>
               <div class="slot-time">🌇 下午</div>
-              <div class="slot"><span class="slot-icon">🌴</span><div class="slot-text">澳门自由行开启：威尼斯人、大三巴牌坊、议事亭前地</div></div>
+              <div class="slot"><span class="slot-icon">🌴</span><div class="slot-text">澳门自由行：威尼斯人、大三巴牌坊、议事亭前地</div></div>
               <div class="slot-time">🌙 晚上</div>
               <div class="slot"><span class="slot-icon">🍜</span><div class="slot-text">安德鲁蛋挞、猪扒包、水蟹粥</div></div>
             </div>
@@ -735,18 +869,21 @@
           <div class="note-pending">🟢 低优先级待细化：如选杭州住一晚，备选酒店</div>
         </div>
       </div>
+
     </div><!-- /timeline -->
   </div>
 </section>
 
-<!-- ═══════════════ ACCOMMODATION ═══════════════ -->
+<!-- ═══ ACCOMMODATION ═══ -->
 <section id="accommodation" style="background:var(--card);padding:60px 0;">
   <div class="container">
     <div class="section-label">STAY</div>
     <div class="section-title">住宿安排</div>
     <div class="hotel-grid">
       <div class="hotel-card">
-        <div class="hotel-banner"><img src="https://picsum.photos/seed/hotel-hz/800/300?blur=1" alt="杭州萧山机场雷迪森酒店" loading="lazy"></div>
+        <div class="hotel-banner">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="杭州萧山机场雷迪森酒店" loading="lazy">
+        </div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--sz)">杭州 · 1晚</span>
           <div class="hotel-name">杭州萧山机场雷迪森酒店</div>
@@ -755,7 +892,9 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner"><img src="https://picsum.photos/seed/hotel-mo/800/300?blur=1" alt="澳门利澳酒店" loading="lazy"></div>
+        <div class="hotel-banner">
+          <img src="https://images.unsplash.com/photo-1569074187119-c87815b476da?w=800&q=80" alt="澳门利澳酒店" loading="lazy">
+        </div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--mo)">澳门 · 2晚</span>
           <div class="hotel-name">澳门利澳酒店</div>
@@ -764,7 +903,9 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner"><img src="https://picsum.photos/seed/hotel-kk1/800/300?blur=1" alt="亚庇凯悦酒店" loading="lazy"></div>
+        <div class="hotel-banner">
+          <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80" alt="亚庇凯悦酒店" loading="lazy">
+        </div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
           <div class="hotel-name">亚庇凯悦酒店</div>
@@ -773,7 +914,9 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner"><img src="https://picsum.photos/seed/hotel-kk2/800/300?blur=1" alt="麦哲伦度假村" loading="lazy"></div>
+        <div class="hotel-banner">
+          <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80" alt="麦哲伦度假村" loading="lazy">
+        </div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
           <div class="hotel-name">麦哲伦度假村</div>
@@ -785,7 +928,7 @@
   </div>
 </section>
 
-<!-- ═══════════════ TRANSPORT ═══════════════ -->
+<!-- ═══ TRANSPORT ═══ -->
 <section id="transport" style="padding:60px 0;">
   <div class="container">
     <div class="section-label">TRANSPORT</div>
@@ -801,7 +944,7 @@
           <tr>
             <td>07-03</td>
             <td>苏州 → 杭州萧山机场</td>
-            <td><span class="transport-mode"><span class="tag tag-drive">🚗 自驾</span></span></td>
+            <td><span class="tag tag-drive">🚗 自驾</span></td>
             <td>—</td>
             <td>高速¥120 + 油费¥100</td>
             <td>导航至P停车场；酒店含停车</td>
@@ -809,7 +952,7 @@
           <tr>
             <td>07-04</td>
             <td>杭州 → 澳门</td>
-            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 澳门航空</span></span></td>
+            <td><span class="tag tag-flight">✈️ 澳门航空</span></td>
             <td><span class="flight-num">NX0009</span> 09:00→11:15</td>
             <td>机票【待查证】</td>
             <td>提前2.5h到机场；行李额度【待查证】</td>
@@ -817,7 +960,7 @@
           <tr>
             <td>07-06</td>
             <td>澳门 → 港珠澳大桥香港口岸</td>
-            <td><span class="transport-mode"><span class="tag tag-bus">🚌 金巴</span></span></td>
+            <td><span class="tag tag-bus">🚌 金巴</span></td>
             <td>10:00发车</td>
             <td>约MOP 70-100/人</td>
             <td>提前购票；车程约40-50min；需港澳通行证</td>
@@ -825,7 +968,7 @@
           <tr>
             <td>07-06</td>
             <td>香港机场 → 亚庇</td>
-            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 亚航</span></span></td>
+            <td><span class="tag tag-flight">✈️ 亚航</span></td>
             <td><span class="flight-num">AK238</span> 13:05→15:55</td>
             <td>机票约¥400-800</td>
             <td><span class="tag tag-warn">⚠️ 需额外购行李额；提前3h到机场</span></td>
@@ -833,7 +976,7 @@
           <tr>
             <td>07-08</td>
             <td>亚庇：凯悦 → 麦哲伦度假村</td>
-            <td><span class="transport-mode"><span class="tag tag-drive">🚕 打车</span></span></td>
+            <td><span class="tag tag-drive">🚕 打车</span></td>
             <td>—</td>
             <td>约RM 20-40</td>
             <td>车程约15-30min</td>
@@ -841,7 +984,7 @@
           <tr>
             <td>07-10</td>
             <td>亚庇 → 杭州</td>
-            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 亚航</span></span></td>
+            <td><span class="tag tag-flight">✈️ 亚航</span></td>
             <td><span class="flight-num">AK239</span> 16:15起飞</td>
             <td>机票【待查证】</td>
             <td><span class="tag tag-warn">⚠️ 需额外购行李额；提前2.5-3h到机场</span></td>
@@ -849,7 +992,7 @@
           <tr>
             <td>07-10</td>
             <td>杭州萧山机场 → 苏州</td>
-            <td><span class="transport-mode"><span class="tag tag-drive">🚗 自驾</span></span></td>
+            <td><span class="tag tag-drive">🚗 自驾</span></td>
             <td>—</td>
             <td>高速¥120 + 油费¥100</td>
             <td>选项B：杭州住一晚次日再回</td>
@@ -860,7 +1003,7 @@
   </div>
 </section>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
+<!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -893,218 +1036,6 @@
     <p class="copyright">© 2026 Neil · 夏季亚澳之旅 &nbsp;|&nbsp; 三文鱼粉 FT 风格手册</p>
   </div>
 </footer>
-
-<!-- ═══════════════ ECHARTS ═══════════════ -->
-<script>
-const CITY_COLORS = {
-  '苏州': '#FF8C69',
-  '杭州': '#E8A87C',
-  '澳门': '#85C1E9',
-  '亚庇': '#48C9B0'
-};
-
-// ─── 1. 路线地图 ───
-const mapChart = echarts.init(document.getElementById('map-chart'));
-const CITY_COLORS_MAP = {
-  '苏州': '#FF8C69',
-  '杭州': '#E8A87C',
-  '澳门': '#85C1E9',
-  '亚庇': '#48C9B0'
-};
-const cityCoords = {
-  '苏州': [120.585, 31.298],
-  '杭州': [120.155, 30.274],
-  '澳门': [113.549, 22.159],
-  '亚庇': [116.073, 5.980]
-};
-const cityArrive = {
-  '苏州': '07-03', '杭州': '07-03',
-  '澳门': '07-04', '亚庇': '07-06'
-};
-const route = [
-  { coords: [cityCoords['苏州'], cityCoords['杭州']], color: '#E8A87C', w: 2 },
-  { coords: [cityCoords['杭州'], cityCoords['澳门']], color: '#85C1E9', w: 2 },
-  { coords: [cityCoords['澳门'], cityCoords['亚庇']], color: '#48C9B0', w: 3 },
-  { coords: [cityCoords['亚庇'], cityCoords['杭州']], color: '#E8A87C', w: 2 },
-  { coords: [cityCoords['杭州'], cityCoords['苏州']], color: '#FF8C69', w: 2 }
-];
-mapChart.setOption({
-  backgroundColor: 'transparent',
-  tooltip: {
-    trigger: 'item',
-    backgroundColor: 'rgba(255,255,255,0.97)',
-    borderColor: '#E8E4DE',
-    borderWidth: 1,
-    textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 13 },
-    extraCssText: 'box-shadow:0 6px 24px rgba(0,0,0,0.12);border-radius:10px;padding:10px 14px;',
-    formatter: (params) => {
-      if (params.componentType === 'series' && params.seriesType === 'scatter') {
-        const c = params.data;
-        return `<div style="font-weight:700;font-size:14px;margin-bottom:4px">${c.name}</div>
-                <div style="color:#6B6B6B;font-size:11px">📍 ${c.value[1].toFixed(2)}°N, ${c.value[0].toFixed(2)}°E</div>
-                <div style="color:#48C9B0;font-size:12px;margin-top:4px">✈️ 抵达：${cityArrive[c.name] || '—'}</div>`;
-      }
-      if (params.componentType === 'series' && params.seriesType === 'lines') return '';
-      return params.name || '';
-    }
-  },
-  geo: {
-    map: 'world',
-    roam: false,
-    silent: true,
-    zoom: 2.2,
-    center: [118, 22],
-    itemStyle: { areaColor: '#EFEFEA', borderColor: '#D5D5D5', borderWidth: 0.5 },
-    emphasis: { disabled: true },
-    select: { disabled: true }
-  },
-  series: [
-    {
-      type: 'lines',
-      geoIndex: 0,
-      coordinateSystem: 'geo',
-      data: route.map(r => ({
-        coords: r.coords,
-        lineStyle: { color: r.color, width: r.w, curveness: 0.15, opacity: 0.75 }
-      })),
-      effect: {
-        show: true, period: 6, symbol: 'circle',
-        symbolSize: 7, color: '#FF8C69', trailLength: 0.25, shadowBlur: 0
-      },
-      z: 10
-    },
-    {
-      type: 'scatter',
-      coordinateSystem: 'geo',
-      data: Object.entries(cityCoords).map(([name, coord]) => ({
-        name, value: coord,
-        itemStyle: {
-          color: CITY_COLORS_MAP[name],
-          shadowBlur: 18,
-          shadowColor: CITY_COLORS_MAP[name],
-          borderColor: '#fff',
-          borderWidth: 2
-        },
-        symbolSize: [14, 14]
-      })),
-      label: {
-        show: true,
-        formatter: '{b}',
-        fontSize: 13, fontWeight: 700,
-        color: '#fff',
-        fontFamily: '"Noto Sans SC",sans-serif',
-        position: 'inside',
-        textShadowBlur: 2,
-        textShadowColor: 'rgba(0,0,0,0.5)'
-      },
-      z: 20
-    },
-    // 外圈光晕效果
-    {
-      type: 'scatter',
-      coordinateSystem: 'geo',
-      data: Object.entries(cityCoords).map(([name, coord]) => ({
-        name, value: coord,
-        itemStyle: {
-          color: 'transparent',
-          borderColor: CITY_COLORS_MAP[name],
-          borderWidth: 2,
-          shadowBlur: 0
-        },
-        symbolSize: [28, 28]
-      })),
-      z: 15
-    }
-  ]
-});
-
-// ─── 2. 饼图：城市停留天数 ───
-try {
-const pieEl = document.getElementById('pie-chart');
-if (pieEl) {
-  const pieChart = echarts.init(pieEl);
-  pieChart.setOption({
-    color: ['#FF8C69','#E8A87C','#85C1E9','#48C9B0'],
-    tooltip: {
-      trigger: 'item',
-      backgroundColor: 'rgba(255,255,255,0.97)',
-      borderColor: '#E8E4DE',
-      borderWidth: 1,
-      textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 13 },
-      extraCssText: 'box-shadow:0 6px 24px rgba(0,0,0,0.12);border-radius:10px;'
-    },
-    legend: { orient: 'vertical', right: 16, top: 'center', textStyle: { color: '#6B6B6B', fontFamily: '"Noto Sans SC",sans-serif' } },
-    series: [{
-      type: 'pie',
-      radius: ['40%', '68%'],
-      center: ['35%', '50%'],
-      avoidLabelOverlap: false,
-      label: { show: false },
-      emphasis: {
-        label: { show: true, fontSize: 13, fontWeight: 700,
-          formatter: '{b}\n{d}%',
-          fontFamily: '"Noto Sans SC",sans-serif',
-          color: '#2A2A2A' }
-      },
-      data: [
-        { value: 1, name: '苏州/杭州' },
-        { value: 2, name: '澳门' },
-        { value: 4, name: '亚庇' }
-      ]
-    }]
-  });
-  window._pieChart = pieChart;
-} else { console.warn('pie-chart element not found'); }
-} catch(e) { console.error('pie chart error:', e); }
-
-// ─── 3. 甘特图：每日行程密度 ───
-try {
-const ganttEl = document.getElementById('gantt-chart');
-if (ganttEl) {
-  const ganttChart = echarts.init(ganttEl);
-  const days = ['07-03','07-04','07-05','07-06','07-07','07-08','07-09','07-10'];
-  const slotNames = ['🌅 上午','☀️ 中午','🌇 下午','🌙 晚上'];
-  const slotColors = ['#FFD4CC','#C8F0DC','#BEE8D4','#F9ECC0'];
-  const ganttData = [
-    [1,1,1,1,1,1,1,1],
-    [0,0,1,1,1,1,1,0],
-    [1,1,1,1,1,1,1,1],
-    [1,1,1,1,1,1,1,1],
-  ];
-  ganttChart.setOption({
-    color: slotColors,
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      backgroundColor: 'rgba(255,255,255,0.97)',
-      borderColor: '#E8E4DE',
-      borderWidth: 1,
-      textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 12 },
-      formatter: (params) => params.map(p => p.marker + ' ' + slotNames[p.seriesIndex] + '：' + (p.value ? '■ 有安排' : '□ 自由时间')).join('<br>'),
-      extraCssText: 'box-shadow:0 6px 24px rgba(0,0,0,0.12);border-radius:10px;'
-    },
-    grid: { left: 48, right: 24, top: 8, bottom: 32 },
-    xAxis: { type: 'category', data: days, axisLabel: { color: '#6B6B6B', fontFamily: '"JetBrains Mono",monospace', fontSize: 11 }, axisLine: { lineStyle: { color: '#E8E4DE' } }, axisTick: { show: false } },
-    yAxis: { type: 'category', data: slotNames, axisLabel: { color: '#6B6B6B', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 11 }, axisLine: { show: false }, axisTick: { show: false }, splitLine: { show: false } },
-    series: slotNames.map((slot, si) => ({
-      type: 'bar',
-      stack: 'day',
-      barWidth: 22,
-      data: ganttData[si],
-      label: { show: false }
-    }))
-  });
-  window._ganttChart = ganttChart;
-} else { console.warn('gantt-chart element not found'); }
-} catch(e) { console.error('gantt chart error:', e); }
-
-// ─── 响应式重绘 ───
-window.addEventListener('resize', () => {
-  mapChart.resize();
-  window._pieChart && window._pieChart.resize();
-  window._ganttChart && window._ganttChart.resize();
-});
-</script>
 
 </body>
 </html>
