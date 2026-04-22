@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neil 2026 · 夏季亚澳之旅</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Source+Sans+Pro:wght@400;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    /* ═══════════════════════════════════════
+       色彩规范（FT · 三文鱼粉系）
+    ═══════════════════════════════════════ */
+    :root {
+      --coral:      #FF8C69;
+      --coral-light:#FFB4A8;
+      --coral-dark: #D4634A;
+      --bg:         #F7F4EF;
+      --card:       #FFFFFF;
+      --border:     #E8E4DE;
+      --text:       #2A2A2A;
+      --text-muted: #6B6B6B;
+      --text-dim:   #ABABAB;
+      --sz:         #FF8C69;  /* 苏州 */
+      --hz:         #E8A87C;  /* 杭州 */
+      --mo:         #85C1E9;  /* 澳门 */
+      --kk:         #48C9B0;  /* 亚庇 */
+    }
+
+    /* ═══════════════════════════════════════
+       重置 & 基线
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans SC', 'Source Sans Pro', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════
+       通用
+    ═══════════════════════════════════════ */
+    .section-label {
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--coral);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section { padding: 60px 0; }
+
+    /* ═══════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════ */
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      height: 64px;
+    }
+    .site-title {
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    nav.header-nav {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+    }
+    nav.header-nav a {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav.header-nav a:hover { color: var(--coral); }
+    .header-summary {
+      display: flex;
+      gap: 16px;
+      margin-left: auto;
+    }
+    .summary-pill {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .summary-pill strong { color: var(--text); }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      background: var(--card);
+      padding: 48px 0 0;
+      text-align: center;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--coral); }
+    .hero-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .route-chips {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 40px;
+    }
+    .city-chip {
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .route-arrow {
+      color: var(--text-dim);
+      font-size: 18px;
+    }
+    #map-chart { width: 100%; height: 420px; }
+    .map-legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 16px 0 32px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    /* ═══════════════════════════════════════
+       STATS
+    ═══════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .stats-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .stats-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    #pie-chart   { width: 100%; height: 280px; }
+    #bar-chart   { width: 100%; height: 280px; }
+    #gantt-chart { width: 100%; height: 160px; }
+
+    /* ═══════════════════════════════════════
+       TIMELINE
+    ═══════════════════════════════════════ */
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 88px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .day-block {
+      display: grid;
+      grid-template-columns: 88px 24px 1fr;
+      gap: 0 20px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .day-date {
+      text-align: right;
+      padding-top: 4px;
+    }
+    .day-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+    }
+    .day-month {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .day-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .day-content { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .city-tag {
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .day-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .day-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .slot { display: flex; gap: 8px; align-items: flex-start; }
+    .slot-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      background: var(--bg);
+    }
+    .slot-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+    .slot-time { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; font-weight: 600; }
+    .slot-label { font-size: 11px; color: var(--text-dim); }
+    .note-warn {
+      margin-top: 12px;
+      background: #FFF5F3;
+      border: 1px solid var(--coral-light);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--coral-dark);
+    }
+    .note-pending {
+      background: #F0FFF7;
+      border: 1px solid #A8E6CF;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #27AE60;
+    }
+
+    /* ═══════════════════════════════════════
+       ACCOMMODATION
+    ═══════════════════════════════════════ */
+    .hotel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .hotel-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .hotel-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .hotel-banner {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    .hotel-body { padding: 16px; }
+    .hotel-city-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hotel-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .hotel-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .hotel-meal { font-size: 12px; color: var(--coral-dark); font-weight: 600; }
+
+    /* ═══════════════════════════════════════
+       TRANSPORT
+    ═══════════════════════════════════════ */
+    .transport-table { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: var(--bg);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FDFBF9; }
+    .flight-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--coral-dark); font-weight: 500; }
+    .transport-mode { display: inline-flex; align-items: center; gap: 4px; }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-flight { background: #EBF5FB; color: #2980B9; }
+    .tag-bus    { background: #FEF9E7; color: #9B7D18; }
+    .tag-drive  { background: #F5EEF8; color: #7D3C98; }
+    .tag-warn   { background: #FDEDEC; color: #C0392B; }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      background: var(--text);
+      color: #fff;
+      padding: 48px 0;
+      margin-top: 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+    }
+    footer h4 {
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 12px;
+    }
+    footer p, footer li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+    }
+    footer ul { list-style: none; }
+    footer a { color: var(--coral-light); text-decoration: none; }
+    .copyright { margin-top: 24px; font-size: 12px; color: rgba(255,255,255,0.4); }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .header-nav { display: none; }
+      .hero-title { font-size: 32px; }
+      nav.header-nav { display: none; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .day-slots { grid-template-columns: 1fr; }
+      .timeline::before { left: 72px; }
+      .day-block { grid-template-columns: 72px 20px 1fr; gap: 0 12px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .hotel-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: 26px; }
+      .hotel-grid { grid-template-columns: 1fr; }
+      .day-block { grid-template-columns: 60px 16px 1fr; }
+      .day-content { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="site-title">Neil 2026 · 夏季亚澳之旅</div>
+    <nav class="header-nav">
+      <a href="#map">路线图</a>
+      <a href="#timeline">时间轴</a>
+      <a href="#stats">数据</a>
+      <a href="#accommodation">住宿</a>
+      <a href="#transport">交通</a>
+    </nav>
+    <div class="header-summary">
+      <span class="summary-pill">📅 <strong>8 天</strong></span>
+      <span class="summary-pill">🌍 <strong>4 城</strong></span>
+      <span class="summary-pill">✈️ <strong>3 段航班</strong></span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ HERO MAP ═══════════════ -->
+<section class="hero" id="map">
+  <div class="container">
+    <div class="hero-title">苏州 → 杭州 → <span>澳门</span> → <span style="color:#48C9B0">亚庇</span></div>
+    <div class="hero-sub">2026年7月3日 – 7月10日 &nbsp;·&nbsp; 8天4城</div>
+    <div class="route-chips">
+      <span class="city-chip" style="background:var(--sz)">🏠 苏州</span>
+      <span class="route-arrow">→</span>
+      <span class="city-chip" style="background:var(--hz)">🏙️ 杭州</span>
+      <span class="route-arrow">→</span>
+      <span class="city-chip" style="background:var(--mo)">🏰 澳门</span>
+      <span class="route-arrow">→</span>
+      <span class="city-chip" style="background:var(--kk)">🌴 亚庇</span>
+      <span class="route-arrow">→</span>
+      <span class="city-chip" style="background:var(--hz)">🏙️ 杭州</span>
+      <span class="route-arrow">→</span>
+      <span class="city-chip" style="background:var(--sz)">🏠 苏州</span>
+    </div>
+    <div id="map-chart"></div>
+    <div class="map-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--sz)"></span>苏州</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--hz)"></span>杭州</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--mo)"></span>澳门</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--kk)"></span>亚庇</span>
+      <span class="legend-item" style="color:var(--text-muted);font-size:12px;">— 航线</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STATS ═══════════════ -->
+<section id="stats" style="background:var(--card);padding:60px 0;">
+  <div class="container">
+    <div class="section-label">DATA OVERVIEW</div>
+    <div class="section-title">行程数据总览</div>
+    <div class="stats-grid">
+      <div class="stats-card">
+        <h3>城市停留天数</h3>
+        <div id="pie-chart"></div>
+      </div>
+      <div class="stats-card">
+        <h3>每日行程密度</h3>
+        <div id="gantt-chart"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<section id="timeline" style="padding:60px 0;">
+  <div class="container">
+    <div class="section-label">ITINERARY</div>
+    <div class="section-title">每日行程详解</div>
+
+    <!-- 07-03 -->
+    <div class="timeline">
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">03</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--sz)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--sz)">苏州</span>
+            <span class="day-title">出发日 · 苏州 → 杭州</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🚗</span><div class="slot-text">苏州自驾出发，导航至杭州萧山机场P停车场</div></div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🏨</span><div class="slot-text">入住 <strong>杭州萧山机场雷迪森酒店</strong>（家庭亲子房，含停车+早餐）</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🍽️</span><div class="slot-text">酒店或周边用晚餐</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">📍</span><div class="slot-text">前往萧山机场踩点，熟悉停车场、航站楼入口，确认次日出发时间</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 建议提前2.5小时到机场（7:00航班，6:00前须出门）</div>
+        </div>
+      </div>
+
+      <!-- 07-04 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">04</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--mo)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--mo)">澳门</span>
+            <span class="day-title">杭州 → 澳门（澳门航空）</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">✈️</span><div class="slot-text">澳门航空 <strong>NX0009</strong> 09:00 杭州起飞 → 11:15 抵澳门</div></div>
+              <div class="slot-time">🌤️ 中午</div>
+              <div class="slot"><span class="slot-icon">🚗</span><div class="slot-text">打车前往 <strong>澳门利澳酒店</strong>（Royal Hotel Macau，双床套房含早）</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🌴</span><div class="slot-text">澳门自由行开启：威尼斯人、大三巴牌坊、议事亭前地</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🍜</span><div class="slot-text">安德鲁蛋挞、猪扒包、水蟹粥</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 澳门航空免费托运行李额度【待查证】，建议提前2.5h到机场</div>
+        </div>
+      </div>
+
+      <!-- 07-05 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">05</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--mo)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--mo)">澳门</span>
+            <span class="day-title">澳门自由行（第二天）</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🌴</span><div class="slot-text">大三巴 → 恋爱巷 → 东望洋灯塔（全景）</div></div>
+              <div class="slot-time">🌤️ 中午</div>
+              <div class="slot"><span class="slot-icon">🍽️</span><div class="slot-text">南屏雅叙 / 黄枝记粥面</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🛍️</span><div class="slot-text">新八佰伴购物 / 大三巴手信街</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🌃</span><div class="slot-text">澳门塔夜景 / 永安咖啡室晚餐</div></div>
+            </div>
+          </div>
+          <div class="note-pending">🔴 高优先级待细化：景点路线 / 餐厅预约 / 购物清单</div>
+        </div>
+      </div>
+
+      <!-- 07-06 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">06</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--kk)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--kk)">亚庇</span>
+            <span class="day-title">澳门 → 香港 → 亚庇（亚航 AK238）</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🚌</span><div class="slot-text">港珠澳大桥口岸金巴 10:00 发车（约40-50min），务必提前买亚航行李额度</div></div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">✈️</span><div class="slot-text">亚航 <strong>AK238</strong> 13:05 香港起飞 → 15:55 抵亚庇</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌙 傍晚</div>
+              <div class="slot"><span class="slot-icon">🌅</span><div class="slot-text">丹绒亚路海滩看日落（世界三大最美日落之一，约18:30-19:00）</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🦋</span><div class="slot-text">天桥榴莲市场：猫山王 / D24 榴莲（注意：不能带回酒店）</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 亚航仅含7kg手提行李，托运须额外购买；记得退香港离境税；入住 <strong>亚庇凯悦酒店</strong>（Hyatt Regency，双床房含早）</div>
+        </div>
+      </div>
+
+      <!-- 07-07 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">07</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--kk)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--kk)">亚庇</span>
+            <span class="day-title">亚庇凯悦 · 城市游 + 红树林</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🏛️</span><div class="slot-text">方案A：沙巴大学粉红清真寺 → 水上清真寺 → 信号山观景台<br>方案B：榴莲庄园半日游（包车，需提前预订）</div></div>
+              <div class="slot-time">🌤️ 中午</div>
+              <div class="slot"><span class="slot-icon">🏨</span><div class="slot-text">酒店休息，逛加雅街吃美食</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌇 下午 – 🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🌳</span><div class="slot-text">红树林之旅（萤丽苑 或 海龟苑）：长鼻猴探索 → 萤火虫夜游，含晚餐</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🦋</span><div class="slot-text">再逛天桥榴莲市场补充遗憾</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 红树林订团【待查证】，建议提前订；车程约1.5-2h，含接送+晚餐，约 MYR 180-280/人</div>
+          <div class="note-pending">🟡 中优先级待细化：城市游 vs 榴莲庄园半日游的选择</div>
+        </div>
+      </div>
+
+      <!-- 07-08 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">08</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--kk)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--kk)">亚庇</span>
+            <span class="day-title">换住麦哲伦度假村 · 跳岛 + 水上项目</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🚤</span><div class="slot-text">退房换住 <strong>麦哲伦度假村</strong>（The Magellan Sutera，码头景俱乐部房，含早+下午茶），出海跳岛至沙比岛 / 马努干岛，拖曳伞、香蕉船、浮潜</div></div>
+              <div class="slot-time">🌤️ 中午</div>
+              <div class="slot"><span class="slot-icon">🍽️</span><div class="slot-text">岛上午餐</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🏖️</span><div class="slot-text">回酒店躺平：无边泳池、私人沙滩、水上滑梯，蹲最美日落</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🍽️</span><div class="slot-text">度假村日落酒吧 / 新记肉骨茶</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 跳岛游约 MYR 100-200/人，水上项目另计；上午海面平静，适合出海</div>
+        </div>
+      </div>
+
+      <!-- 07-09 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">09</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--kk)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--kk)">亚庇</span>
+            <span class="day-title">麦哲伦度假村 · 海钓 / 躺平</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🎣</span><div class="slot-text"><strong>方案1：</strong>出海海钓（含浮潜），目标金枪鱼、GT（珍鲹）、石斑，包船约 MYR 400-700/船<br><strong>方案2：</strong>酒店躺平，睡到自然醒</div></div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">🏊</span><div class="slot-text"><strong>方案1：</strong>回酒店泳池躺平<br><strong>方案2：</strong>下午出海海钓（注意防晒）</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🦋</span><div class="slot-text">天桥榴莲市场最后打卡：采购猫山王/D24</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🍽️</span><div class="slot-text">最后一晚大餐：大茄来海鲜 / 双天海鲜</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 海钓船长联系【待查证】；方案视天气和体力最终决定</div>
+        </div>
+      </div>
+
+      <!-- 07-10 -->
+      <div class="day-block">
+        <div class="day-date"><div class="day-num">10</div><div class="day-month">JUL</div></div>
+        <div class="day-dot" style="background:var(--sz)"></div>
+        <div class="day-content">
+          <div class="day-header">
+            <span class="city-tag" style="background:var(--sz)">返程</span>
+            <span class="day-title">亚庇 → 杭州 → 苏州</span>
+          </div>
+          <div class="day-slots">
+            <div>
+              <div class="slot-time">🌅 上午</div>
+              <div class="slot"><span class="slot-icon">🏨</span><div class="slot-text">退房，可将行李寄存，享受最后沙滩/泳池时光</div></div>
+              <div class="slot-time">🌇 下午</div>
+              <div class="slot"><span class="slot-icon">✈️</span><div class="slot-text">亚航 <strong>AK239</strong> 16:15 亚庇起飞 → 约21:00-22:00 抵杭州</div></div>
+            </div>
+            <div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🏪</span><div class="slot-text">杭州机场全球通贵宾室等候（如有权限）</div></div>
+              <div class="slot-time">🌙 晚上</div>
+              <div class="slot"><span class="slot-icon">🚗</span><div class="slot-text"><strong>选项A：</strong>自驾杭州→苏州（约2-2.5h）<br><strong>选项B：</strong>杭州住1晚，次日再回苏州</div></div>
+            </div>
+          </div>
+          <div class="note-warn">⚠️ 亚航需提前2.5-3h到机场，行李额度务必提前购买；如太晚抵杭州建议选项B</div>
+          <div class="note-pending">🟢 低优先级待细化：如选杭州住一晚，备选酒店</div>
+        </div>
+      </div>
+    </div><!-- /timeline -->
+  </div>
+</section>
+
+<!-- ═══════════════ ACCOMMODATION ═══════════════ -->
+<section id="accommodation" style="background:var(--card);padding:60px 0;">
+  <div class="container">
+    <div class="section-label">STAY</div>
+    <div class="section-title">住宿安排</div>
+    <div class="hotel-grid">
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background:linear-gradient(135deg,#FF8C69,#FFB4A8)">🏨</div>
+        <div class="hotel-body">
+          <span class="hotel-city-tag" style="background:var(--sz)">杭州 · 1晚</span>
+          <div class="hotel-name">杭州萧山机场雷迪森酒店</div>
+          <div class="hotel-meta">📍 杭州萧山机场附近 | 🛏️ 家庭亲子房</div>
+          <div class="hotel-meal">✓ 早餐 · ✓ 停车</div>
+        </div>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background:linear-gradient(135deg,#85C1E9,#AED6F1)">🏰</div>
+        <div class="hotel-body">
+          <span class="hotel-city-tag" style="background:var(--mo)">澳门 · 2晚</span>
+          <div class="hotel-name">澳门利澳酒店</div>
+          <div class="hotel-meta">📍 澳门半岛市中心 | 🛏️ 双床套房</div>
+          <div class="hotel-meal">✓ 早餐</div>
+        </div>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background:linear-gradient(135deg,#48C9B0,#76D7C4)">🌴</div>
+        <div class="hotel-body">
+          <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
+          <div class="hotel-name">亚庇凯悦酒店</div>
+          <div class="hotel-meta">📍 市中心，加雅街附近 | 🛏️ 双床房</div>
+          <div class="hotel-meal">✓ 早餐</div>
+        </div>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-banner" style="background:linear-gradient(135deg,#48C9B0,#1ABC9C)">🏝️</div>
+        <div class="hotel-body">
+          <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
+          <div class="hotel-name">麦哲伦度假村</div>
+          <div class="hotel-meta">📍 Sutera Harbour | 🛏️ 码头景俱乐部房</div>
+          <div class="hotel-meal">✓ 早餐 · ✓ 下午茶</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TRANSPORT ═══════════════ -->
+<section id="transport" style="padding:60px 0;">
+  <div class="container">
+    <div class="section-label">TRANSPORT</div>
+    <div class="section-title">交通明细</div>
+    <div class="transport-table">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th><th>区间</th><th>方式</th><th>班次</th><th>费用参考</th><th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>07-03</td>
+            <td>苏州 → 杭州萧山机场</td>
+            <td><span class="transport-mode"><span class="tag tag-drive">🚗 自驾</span></span></td>
+            <td>—</td>
+            <td>高速¥120 + 油费¥100</td>
+            <td>导航至P停车场；酒店含停车</td>
+          </tr>
+          <tr>
+            <td>07-04</td>
+            <td>杭州 → 澳门</td>
+            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 澳门航空</span></span></td>
+            <td><span class="flight-num">NX0009</span> 09:00→11:15</td>
+            <td>机票【待查证】</td>
+            <td>提前2.5h到机场；行李额度【待查证】</td>
+          </tr>
+          <tr>
+            <td>07-06</td>
+            <td>澳门 → 港珠澳大桥香港口岸</td>
+            <td><span class="transport-mode"><span class="tag tag-bus">🚌 金巴</span></span></td>
+            <td>10:00发车</td>
+            <td>约MOP 70-100/人</td>
+            <td>提前购票；车程约40-50min；需港澳通行证</td>
+          </tr>
+          <tr>
+            <td>07-06</td>
+            <td>香港机场 → 亚庇</td>
+            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 亚航</span></span></td>
+            <td><span class="flight-num">AK238</span> 13:05→15:55</td>
+            <td>机票约¥400-800</td>
+            <td><span class="tag tag-warn">⚠️ 需额外购行李额；提前3h到机场</span></td>
+          </tr>
+          <tr>
+            <td>07-08</td>
+            <td>亚庇：凯悦 → 麦哲伦度假村</td>
+            <td><span class="transport-mode"><span class="tag tag-drive">🚕 打车</span></span></td>
+            <td>—</td>
+            <td>约RM 20-40</td>
+            <td>车程约15-30min</td>
+          </tr>
+          <tr>
+            <td>07-10</td>
+            <td>亚庇 → 杭州</td>
+            <td><span class="transport-mode"><span class="tag tag-flight">✈️ 亚航</span></span></td>
+            <td><span class="flight-num">AK239</span> 16:15起飞</td>
+            <td>机票【待查证】</td>
+            <td><span class="tag tag-warn">⚠️ 需额外购行李额；提前2.5-3h到机场</span></td>
+          </tr>
+          <tr>
+            <td>07-10</td>
+            <td>杭州萧山机场 → 苏州</td>
+            <td><span class="transport-mode"><span class="tag tag-drive">🚗 自驾</span></span></td>
+            <td>—</td>
+            <td>高速¥120 + 油费¥100</td>
+            <td>选项B：杭州住一晚次日再回</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>实用信息</h4>
+        <ul>
+          <li>🇨🇳 中国大陆/澳门：UTC+8，无时差</li>
+          <li>🇲🇾 马来西亚：UTC+8，与中国同区，无时差</li>
+          <li>💱 汇率：1 MOP ≈ 0.89 CNY；1 MYR ≈ 1.72 CNY</li>
+          <li>🔌 澳门/马来西亚均为英式插头，需转换器</li>
+        </ul>
+      </div>
+      <div>
+        <h4>证件清单</h4>
+        <ul>
+          <li>🛂 中国护照（有效期≥6个月）</li>
+          <li>📄 港澳通行证 + 有效签注</li>
+          <li>🛂 马来西亚 eVISA / ENTRI（提前办理，约3工作日）</li>
+        </ul>
+      </div>
+      <div>
+        <h4>紧急联系</h4>
+        <ul>
+          <li>🇲🇴 澳门：报警/急救 999</li>
+          <li>🇭🇰 香港：报警 999 / 112</li>
+          <li>🇲🇾 马来西亚：急救/报警 999 / 112</li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">© 2026 Neil · 夏季亚澳之旅 &nbsp;|&nbsp; 三文鱼粉 FT 风格手册</p>
+  </div>
+</footer>
+
+<!-- ═══════════════ ECHARTS ═══════════════ -->
+<script>
+const CITY_COLORS = {
+  '苏州': '#FF8C69',
+  '杭州': '#E8A87C',
+  '澳门': '#85C1E9',
+  '亚庇': '#48C9B0'
+};
+
+// ─── 1. 路线地图 ───
+const mapChart = echarts.init(document.getElementById('map-chart'));
+const cityCoords = {
+  '苏州': [120.585, 31.298],
+  '杭州': [120.155, 30.274],
+  '澳门': [113.549, 22.159],
+  '亚庇': [116.073, 5.980]
+};
+const route = [
+  { coords: [cityCoords['苏州'], cityCoords['杭州']] },
+  { coords: [cityCoords['杭州'], cityCoords['澳门']] },
+  { coords: [cityCoords['澳门'], cityCoords['亚庇']] },
+  { coords: [cityCoords['亚庇'], cityCoords['杭州']] },
+  { coords: [cityCoords['杭州'], cityCoords['苏州']] }
+];
+mapChart.setOption({
+  backgroundColor: 'transparent',
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    borderColor: '#E8E4DE',
+    textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif' },
+    extraCssText: 'box-shadow:0 4px 16px rgba(0,0,0,0.08);border-radius:8px;'
+  },
+  geo: {
+    map: 'world',
+    roam: false,
+    silent: true,
+    itemStyle: { areaColor: '#EAEAEA', borderColor: '#D5D5D5' },
+    emphasis: { disabled: true }
+  },
+  series: [
+    {
+      type: 'lines',
+      geoIndex: 0,
+      coordinateSystem: 'geo',
+      data: [
+        { coords: route[0].coords, lineStyle: { color: '#E8A87C', width: 2, curveness: 0.2 } },
+        { coords: route[1].coords, lineStyle: { color: '#85C1E9', width: 2, curveness: 0.1 } },
+        { coords: route[2].coords, lineStyle: { color: '#48C9B0', width: 3, curveness: 0.15 } },
+        { coords: route[3].coords, lineStyle: { color: '#E8A87C', width: 2, curveness: 0.1 } },
+        { coords: route[4].coords, lineStyle: { color: '#FF8C69', width: 2, curveness: 0.2 } }
+      ],
+      effect: { show: true, period: 4, symbol: 'circle', symbolSize: 6, color: '#FF8C69', trailLength: 0.3 },
+      lineStyle: { width: 2, opacity: 0.7, type: 'solid' },
+      z: 10
+    },
+    {
+      type: 'scatter',
+      coordinateSystem: 'geo',
+      data: Object.entries(cityCoords).map(([name, coord]) => ({
+        name, value: coord,
+        itemStyle: { color: name === '亚庇' ? '#48C9B0' : name === '澳门' ? '#85C1E9' : name === '杭州' ? '#E8A87C' : '#FF8C69', shadowBlur: 12, shadowColor: name === '亚庇' ? '#48C9B0' : name === '澳门' ? '#85C1E9' : name === '杭州' ? '#E8A87C' : '#FF8C69' },
+        label: { show: true, formatter: '{b}', fontSize: 12, fontWeight: 600, color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', position: 'bottom', offset: [0, 8] }
+      })),
+      z: 20
+    }
+  ]
+});
+
+// ─── 2. 饼图：城市停留天数 ───
+const pieChart = echarts.init(document.getElementById('pie-chart'));
+pieChart.setOption({
+  color: ['#FF8C69','#E8A87C','#85C1E9','#48C9B0'],
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    borderColor: '#E8E4DE',
+    textStyle: { color: '#2A2A2A' },
+    extraCssText: 'box-shadow:0 4px 16px rgba(0,0,0,0.08);border-radius:8px;'
+  },
+  legend: { orient: 'vertical', right: 16, top: 'center', textStyle: { color: '#6B6B6B', fontFamily: '"Noto Sans SC",sans-serif' } },
+  series: [{
+    type: 'pie',
+    radius: ['42%', '70%'],
+    center: ['35%', '50%'],
+    avoidLabelOverlap: false,
+    label: { show: false },
+    emphasis: {
+      label: { show: true, fontSize: 14, fontWeight: 700, formatter: '{b}\n{d}%', fontFamily: '"Noto Sans SC",sans-serif' }
+    },
+    data: [
+      { value: 2, name: '苏州/杭州（途经）' },
+      { value: 2, name: '澳门' },
+      { value: 4, name: '亚庇' }
+    ]
+  }]
+});
+
+// ─── 3. 甘特图：每日行程密度 ───
+const ganttChart = echarts.init(document.getElementById('gantt-chart'));
+const days = ['07-03','07-04','07-05','07-06','07-07','07-08','07-09','07-10'];
+const slotNames = ['🌅 上午','☀️ 中午','🌇 下午','🌙 晚上'];
+const slotColors = ['#FFD4CC','#C8F0DC','#BEE8D4','#F9ECC0'];
+// [上午, 中午, 下午, 晚上] × 8天  — 1=有安排, 0=自由时间
+const ganttData = [
+  [1,1,1,1,1,1,1,1], // 上午：07-03有安排（自驾/入住），其余每天有
+  [0,0,1,1,1,1,1,0], // 中午：07-05/06/07/08/09有安排
+  [1,1,1,1,1,1,1,1], // 下午：全覆盖
+  [1,1,1,1,1,1,1,1], // 晚上：全覆盖
+];
+ganttChart.setOption({
+  color: slotColors,
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: { type: 'shadow' },
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    borderColor: '#E8E4DE',
+    textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif' },
+    formatter: (params) => params.map(p => `${p.marker} ${slotNames[p.seriesIndex]}：${p.value ? '■ 有安排' : '□ 自由时间'}`).join('<br>'),
+    extraCssText: 'box-shadow:0 4px 16px rgba(0,0,0,0.08);border-radius:8px;'
+  },
+  grid: { left: 48, right: 24, top: 8, bottom: 32 },
+  xAxis: { type: 'category', data: days, axisLabel: { color: '#6B6B6B', fontFamily: '"JetBrains Mono",monospace', fontSize: 11 }, axisLine: { lineStyle: { color: '#E8E4DE' } }, axisTick: { show: false } },
+  yAxis: { type: 'category', data: slotNames, axisLabel: { color: '#6B6B6B', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 11 }, axisLine: { show: false }, axisTick: { show: false }, splitLine: { show: false } },
+  series: slotNames.map((slot, si) => ({
+    type: 'bar',
+    stack: 'day',
+    barWidth: 22,
+    data: ganttData[si],
+    label: { show: false }
+  }))
+});
+
+// ─── 响应式重绘 ───
+window.addEventListener('resize', () => {
+  mapChart.resize();
+  pieChart.resize();
+  ganttChart.resize();
+});
+</script>
+
+</body>
+</html>
