@@ -541,94 +541,33 @@
       <span class="city-chip" style="background:var(--hz)">🏙️ 杭州</span>
       <span class="route-arrow">→</span>
       <span class="city-chip" style="background:var(--sz)">🏠 苏州</span>
-    </di<!-- 真实地图底图 + 精确地理坐标城市节点 -->
-    <div class="route-map">
-      <svg class="map-bg-svg" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
-        <!-- 海洋背景 -->
-        <rect width="900" height="420" fill="url(#oceanGrad)" rx="12"/>
-        <defs>
-          <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#B8DDE8"/>
-            <stop offset="100%" stop-color="#D4EAF5"/>
-          </linearGradient>
-        </defs>
-
-        <!-- 澳大利亚东北部（作为视觉参照） -->
-        <path d="M 60 320 Q 80 290 110 300 Q 130 295 140 310 Q 150 325 140 340 Q 125 355 100 350 Q 75 345 60 320Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-        <!-- 菲律宾群岛（东部） -->
-        <path d="M 720 180 Q 735 170 750 175 Q 755 185 745 195 Q 730 200 720 195 Q 715 188 720 180Z" fill="#A8C89A" stroke="#B5D0A5" stroke-width="0.5"/>
-        <path d="M 710 200 Q 720 192 730 198 Q 735 208 725 215 Q 715 218 710 210Z" fill="#A8C89A" stroke="#B5D0A5" stroke-width="0.5"/>
-        <!-- 加里曼丹/婆罗洲 -->
-        <path d="M 580 310 Q 600 295 625 300 Q 650 305 665 315 Q 680 328 670 345 Q 655 360 635 358 Q 610 355 595 340 Q 578 328 580 310Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-        <!-- 苏拉威西 -->
-        <path d="M 680 295 Q 695 285 710 292 Q 720 300 712 312 Q 700 320 685 315 Q 675 305 680 295Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-
-        <!-- 中国东南沿海大陆架（简化） -->
-        <!-- 浙江-福建-广东沿海形状 -->
-        <path d="M 640 55 Q 660 50 680 55 Q 700 60 715 68 Q 730 78 740 90 Q 750 105 745 120 Q 738 135 725 145 Q 710 155 695 162 Q 680 168 665 175 Q 648 182 635 190 Q 620 198 610 210 Q 598 222 590 235 Q 580 248 575 260 Q 568 272 562 285 Q 555 298 550 312 Q 548 320 545 325 Q 540 330 535 330 Q 530 328 528 322 Q 525 315 528 308 Q 532 298 540 288 Q 548 278 558 268 Q 568 258 578 248 Q 588 238 598 228 Q 610 218 622 208 Q 635 198 648 188 Q 660 178 672 168 Q 685 158 698 148 Q 710 138 720 128 Q 728 118 735 105 Q 740 92 742 78 Q 742 65 738 55 Q 730 48 720 46 Q 708 45 695 47 Q 680 50 665 53Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-        <!-- 台湾岛 -->
-        <path d="M 705 130 Q 712 120 720 118 Q 728 120 732 130 Q 735 140 730 150 Q 722 158 715 158 Q 708 155 705 145Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-        <!-- 海南岛 -->
-        <path d="M 610 210 Q 618 202 628 205 Q 635 210 632 220 Q 625 228 617 226 Q 610 222 610 210Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-
-        <!-- 城市节点 -->
-        <!-- 苏州：x=73.1%, y=10.6% -->
-        <circle cx="658" cy="44" r="10" fill="#FF8C69" stroke="#fff" stroke-width="3"/>
-        <!-- 杭州：x=71.9%, y=13.5% -->
-        <circle cx="647" cy="57" r="10" fill="#E8A87C" stroke="#fff" stroke-width="3"/>
-        <!-- 澳门：x=53.0%, y=36.7% -->
-        <circle cx="477" cy="154" r="10" fill="#85C1E9" stroke="#fff" stroke-width="3"/>
-        <!-- 亚庇：x=60.2%, y=82.9% -->
-        <circle cx="542" cy="348" r="12" fill="#48C9B0" stroke="#fff" stroke-width="3"/>
-
-        <!-- 城市名称（SVG文字，精确地理标注） -->
-        <text x="658" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2A2A" font-family="'Noto Sans SC',sans-serif">苏州</text>
-        <text x="647" y="46" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2A2A" font-family="'Noto Sans SC',sans-serif">杭州</text>
-        <text x="477" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2A2A" font-family="'Noto Sans SC',sans-serif">澳门</text>
-        <text x="542" y="372" text-anchor="middle" font-size="13" font-weight="700" fill="#2A2A2A" font-family="'Noto Sans SC',sans-serif">亚庇</text>
-
-        <!-- 坐标标注 -->
-        <text x="658" y="68" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">31.3°N 120.6°E</text>
-        <text x="647" y="80" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">30.3°N 120.2°E</text>
-        <text x="477" y="182" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">22.2°N 113.5°E</text>
-        <text x="542" y="385" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">6.0°N 116.1°E</text>
-
-        <!-- 抵达日期标注 -->
-        <rect x="632" y="48" width="36" height="16" rx="8" fill="rgba(255,140,105,0.15)"/>
-        <text x="650" y="60" text-anchor="middle" font-size="10" fill="#D4634A" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
-        <rect x="621" y="61" width="36" height="16" rx="8" fill="rgba(232,168,124,0.15)"/>
-        <text x="639" y="73" text-anchor="middle" font-size="10" fill="#b07840" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
-        <rect x="451" y="158" width="36" height="16" rx="8" fill="rgba(133,193,233,0.15)"/>
-        <text x="469" y="170" text-anchor="middle" font-size="10" fill="#2980B9" font-weight="700" font-family="'JetBrains Mono',monospace">07-04</text>
-        <rect x="516" y="352" width="36" height="16" rx="8" fill="rgba(72,201,176,0.15)"/>
-        <text x="534" y="364" text-anchor="middle" font-size="10" fill="#1A8A6F" font-weight="700" font-family="'JetBrains Mono',monospace">07-06</text>
-
-        <!-- 航线弧线 -->
-        <path d="M 658 44 Q 652 48 647 57" fill="none" stroke="#E8A87C" stroke-width="2" stroke-dasharray="5,4" opacity="0.8"/>
-        <path d="M 647 57 Q 562 100 477 154" fill="none" stroke="#85C1E9" stroke-width="2" stroke-dasharray="5,4" opacity="0.8"/>
-        <path d="M 477 154 Q 510 250 542 348" fill="none" stroke="#48C9B0" stroke-width="2.5" stroke-dasharray="5,4" opacity="0.8"/>
-
-        <!-- 飞机动画箭头 -->
-        <polygon points="0,-4 8,0 0,4" fill="#85C1E9" opacity="0.9">
-          <animateMotion dur="4s" repeatCount="indefinite" path="M 647 57 Q 562 100 477 154"/>
-        </polygon>
-        <polygon points="0,-4 8,0 0,4" fill="#48C9B0" opacity="0.9">
-          <animateMotion dur="3.5s" repeatCount="indefinite" path="M 477 154 Q 510 250 542 348"/>
-        </polygon>
-      </svg>
-
-      <!-- 婆罗洲小图Inset（右下角） -->
-      <div class="map-inset">
-        <svg class="inset-svg" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
-          <rect width="160" height="100" fill="#C8E6F0" rx="6"/>
-          <!-- 婆罗洲轮廓 -->
-          <path d="M 25 15 Q 40 10 60 15 Q 80 20 95 25 Q 110 32 115 45 Q 118 58 110 70 Q 100 82 82 85 Q 62 87 45 78 Q 28 70 22 55 Q 18 40 25 15Z" fill="#8DB87A" stroke="#A5C090" stroke-width="0.5"/>
-          <!-- 亚庇标记 -->
-          <circle cx="85" cy="55" r="5" fill="#48C9B0" stroke="#fff" stroke-width="1.5"/>
-          <text x="85" y="48" text-anchor="middle" font-size="8" font-weight="700" fill="#2A2A2A" font-family="'Noto Sans SC',sans-serif">亚庇</text>
-          <text x="85" y="68" text-anchor="middle" font-size="7" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">6°N 116°E</text>
-        </svg>
-        <div class="inset-label">婆罗洲</div>
+    <!-- Neil 截图底图 + 精确城市标记 -->
+    <div class="route-map" style="max-width:100%;overflow:hidden;border-radius:12px;position:relative;line-height:0;">
+      <img
+        src="https://raw.githubusercontent.com/Xiaojuzi-oc/travel-2026/main/map-overlay.png"
+        alt="Neil 2026 亚澳之旅路线图"
+        style="width:100%;height:auto;display:block;"
+      />
+      <!-- CSS 浮层城市节点（精确对应图片尺寸比例） -->
+      <div class="map-city sz" style="position:absolute;top:26.6%;left:73.1%;transform:translate(-50%,-50%);">
+        <div class="map-city-dot" style="width:18px;height:18px;border-radius:50%;border:3px solid #fff;background:#FF8C69;box-shadow:0 2px 8px rgba(0,0,0,0.25);"></div>
+        <div class="map-city-label" style="font-size:12px;font-weight:700;color:#fff;padding:2px 8px;border-radius:8px;background:#FF8C69;white-space:nowrap;font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.4);">苏州</div>
+        <div class="map-city-date" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:1px 6px;border-radius:6px;background:rgba(255,140,105,0.15);color:#D4634A;white-space:nowrap;text-align:center;">07-03</div>
+      </div>
+      <div class="map-city hz" style="position:absolute;top:33.6%;left:71.9%;transform:translate(-50%,-50%);">
+        <div class="map-city-dot" style="width:18px;height:18px;border-radius:50%;border:3px solid #fff;background:#E8A87C;box-shadow:0 2px 8px rgba(0,0,0,0.25);"></div>
+        <div class="map-city-label" style="font-size:12px;font-weight:700;color:#fff;padding:2px 8px;border-radius:8px;background:#E8A87C;white-space:nowrap;font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.4);">杭州</div>
+        <div class="map-city-date" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:1px 6px;border-radius:6px;background:rgba(232,168,124,0.15);color:#b07840;white-space:nowrap;text-align:center;">07-03</div>
+      </div>
+      <div class="map-city mo" style="position:absolute;top:63.3%;left:53.0%;transform:translate(-50%,-50%);">
+        <div class="map-city-dot" style="width:18px;height:18px;border-radius:50%;border:3px solid #fff;background:#85C1E9;box-shadow:0 2px 8px rgba(0,0,0,0.25);"></div>
+        <div class="map-city-label" style="font-size:12px;font-weight:700;color:#fff;padding:2px 8px;border-radius:8px;background:#85C1E9;white-space:nowrap;font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.4);">澳门</div>
+        <div class="map-city-date" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:1px 6px;border-radius:6px;background:rgba(133,193,233,0.15);color:#2980B9;white-space:nowrap;text-align:center;">07-04</div>
+      </div>
+      <div class="map-city kk" style="position:absolute;top:84.0%;left:60.2%;transform:translate(-50%,-50%);">
+        <div class="map-city-dot" style="width:20px;height:20px;border-radius:50%;border:3px solid #fff;background:#48C9B0;box-shadow:0 2px 8px rgba(0,0,0,0.25);"></div>
+        <div class="map-city-label" style="font-size:12px;font-weight:700;color:#fff;padding:2px 8px;border-radius:8px;background:#48C9B0;white-space:nowrap;font-family:'Noto Sans SC',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,0.4);">亚庇</div>
+        <div class="map-city-date" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:1px 6px;border-radius:6px;background:rgba(72,201,176,0.15);color:#1A8A6F;white-space:nowrap;text-align:center;">07-06</div>
       </div>
     </div>
 
@@ -639,106 +578,6 @@
       <span class="legend-item"><span class="legend-dot" style="background:#48C9B0"></span>亚庇</span>
       <span class="legend-item" style="color:#6B6B6B;font-size:12px">-- 航线 · 飞行动效</span>
     </div>
-
-<!-- ═══ STATS ═══ -->
-<section id="stats" style="background:var(--card);padding:60px 0;">
-  <div class="container">
-    <div class="section-label">DATA OVERVIEW</div>
-    <div class="section-title">行程数据总览</div>
-    <div class="stats-grid">
-      <div class="stats-card">
-        <h3>城市停留天数</h3>
-        <div class="pie-container">
-          <div class="pie-chart-css"></div>
-          <div class="pie-legend">
-            <div class="pie-legend-item">
-              <span class="pie-legend-dot" style="background:var(--sz)"></span>
-              <span class="pie-legend-label">苏州/杭州</span>
-              <span class="pie-legend-val">1天</span>
-            </div>
-            <div class="pie-legend-item">
-              <span class="pie-legend-dot" style="background:var(--mo)"></span>
-              <span class="pie-legend-label">澳门</span>
-              <span class="pie-legend-val">2天</span>
-            </div>
-            <div class="pie-legend-item">
-              <span class="pie-legend-dot" style="background:var(--kk)"></span>
-              <span class="pie-legend-label">亚庇</span>
-              <span class="pie-legend-val">4天</span>
-            </div>
-            <div class="pie-legend-item">
-              <span class="pie-legend-dot" style="background:var(--hz)"></span>
-              <span class="pie-legend-label">杭州（返程）</span>
-              <span class="pie-legend-val">1天</span>
-            </div>
-          </div>
-        </div>
-      </div>
-       <div class="stats-card">
-        <h3>每日行程类型</h3>
-        <div class="day-type-list">
-          <div class="day-type-row">
-            <span class="day-type-date">07-03</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#FF8C69">🚗 自驾</span>
-              <span class="day-type-tag" style="background:#E8A87C">🏨 入住</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-04</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#85C1E9">✈️ 航班</span>
-              <span class="day-type-tag" style="background:#6B6B6B">🏰 自由行</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-05</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#6B6B6B">🏰 自由行</span>
-              <span class="day-type-tag" style="background:#ABABAB">🌿 待细化</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-06</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#D4634A">🚌 跨境大巴</span>
-              <span class="day-type-tag" style="background:#85C1E9">✈️ 航班</span>
-              <span class="day-type-tag" style="background:#48C9B0">🌅 日落</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-07</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#48C9B0">🏛️ 城市游</span>
-              <span class="day-type-tag" style="background:#1A8A6F">🌳 红树林</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-08</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#48C9B0">🚤 跳岛</span>
-              <span class="day-type-tag" style="background:#1ABC9C">🏖️ 度假村</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-09</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#48C9B0">🎣 海钓</span>
-              <span class="day-type-tag" style="background:#1ABC9C">🏖️ 躺平</span>
-            </div>
-          </div>
-          <div class="day-type-row">
-            <span class="day-type-date">07-10</span>
-            <div class="day-type-tags">
-              <span class="day-type-tag" style="background:#85C1E9">✈️ 返程</span>
-              <span class="day-type-tag" style="background:#FF8C69">🚗 自驾</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══ TIMELINE ═══ -->
 <section id="timeline" style="padding:60px 0;">
