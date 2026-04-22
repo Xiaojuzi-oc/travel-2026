@@ -317,10 +317,20 @@
     .hotel-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .hotel-banner {
       height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hotel-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hotel-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.35));
     }
     .hotel-body { padding: 16px; }
     .hotel-city-tag {
@@ -736,7 +746,7 @@
     <div class="section-title">住宿安排</div>
     <div class="hotel-grid">
       <div class="hotel-card">
-        <div class="hotel-banner" style="background:linear-gradient(135deg,#FF8C69,#FFB4A8)">🏨</div>
+        <div class="hotel-banner"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="杭州萧山机场雷迪森酒店"></div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--sz)">杭州 · 1晚</span>
           <div class="hotel-name">杭州萧山机场雷迪森酒店</div>
@@ -745,7 +755,7 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner" style="background:linear-gradient(135deg,#85C1E9,#AED6F1)">🏰</div>
+        <div class="hotel-banner"><img src="https://images.unsplash.com/photo-1569074187119-c87815b476da?w=800&q=80" alt="澳门利澳酒店"></div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--mo)">澳门 · 2晚</span>
           <div class="hotel-name">澳门利澳酒店</div>
@@ -754,7 +764,7 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner" style="background:linear-gradient(135deg,#48C9B0,#76D7C4)">🌴</div>
+        <div class="hotel-banner"><img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80" alt="亚庇凯悦酒店"></div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
           <div class="hotel-name">亚庇凯悦酒店</div>
@@ -763,7 +773,7 @@
         </div>
       </div>
       <div class="hotel-card">
-        <div class="hotel-banner" style="background:linear-gradient(135deg,#48C9B0,#1ABC9C)">🏝️</div>
+        <div class="hotel-banner"><img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80" alt="麦哲伦度假村"></div>
         <div class="hotel-body">
           <span class="hotel-city-tag" style="background:var(--kk)">亚庇 · 2晚</span>
           <div class="hotel-name">麦哲伦度假村</div>
@@ -895,49 +905,72 @@ const CITY_COLORS = {
 
 // ─── 1. 路线地图 ───
 const mapChart = echarts.init(document.getElementById('map-chart'));
+const CITY_COLORS_MAP = {
+  '苏州': '#FF8C69',
+  '杭州': '#E8A87C',
+  '澳门': '#85C1E9',
+  '亚庇': '#48C9B0'
+};
 const cityCoords = {
   '苏州': [120.585, 31.298],
   '杭州': [120.155, 30.274],
   '澳门': [113.549, 22.159],
   '亚庇': [116.073, 5.980]
 };
+const cityArrive = {
+  '苏州': '07-03', '杭州': '07-03',
+  '澳门': '07-04', '亚庇': '07-06'
+};
 const route = [
-  { coords: [cityCoords['苏州'], cityCoords['杭州']] },
-  { coords: [cityCoords['杭州'], cityCoords['澳门']] },
-  { coords: [cityCoords['澳门'], cityCoords['亚庇']] },
-  { coords: [cityCoords['亚庇'], cityCoords['杭州']] },
-  { coords: [cityCoords['杭州'], cityCoords['苏州']] }
+  { coords: [cityCoords['苏州'], cityCoords['杭州']], color: '#E8A87C', w: 2 },
+  { coords: [cityCoords['杭州'], cityCoords['澳门']], color: '#85C1E9', w: 2 },
+  { coords: [cityCoords['澳门'], cityCoords['亚庇']], color: '#48C9B0', w: 3 },
+  { coords: [cityCoords['亚庇'], cityCoords['杭州']], color: '#E8A87C', w: 2 },
+  { coords: [cityCoords['杭州'], cityCoords['苏州']], color: '#FF8C69', w: 2 }
 ];
 mapChart.setOption({
   backgroundColor: 'transparent',
   tooltip: {
     trigger: 'item',
-    backgroundColor: 'rgba(255,255,255,0.96)',
+    backgroundColor: 'rgba(255,255,255,0.97)',
     borderColor: '#E8E4DE',
-    textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif' },
-    extraCssText: 'box-shadow:0 4px 16px rgba(0,0,0,0.08);border-radius:8px;'
+    borderWidth: 1,
+    textStyle: { color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', fontSize: 13 },
+    extraCssText: 'box-shadow:0 6px 24px rgba(0,0,0,0.12);border-radius:10px;padding:10px 14px;',
+    formatter: (params) => {
+      if (params.componentType === 'series' && params.seriesType === 'scatter') {
+        const c = params.data;
+        return `<div style="font-weight:700;font-size:14px;margin-bottom:4px">${c.name}</div>
+                <div style="color:#6B6B6B;font-size:11px">📍 ${c.value[1].toFixed(2)}°N, ${c.value[0].toFixed(2)}°E</div>
+                <div style="color:#48C9B0;font-size:12px;margin-top:4px">✈️ 抵达：${cityArrive[c.name] || '—'}</div>`;
+      }
+      if (params.componentType === 'series' && params.seriesType === 'lines') return '';
+      return params.name || '';
+    }
   },
   geo: {
     map: 'world',
     roam: false,
     silent: true,
-    itemStyle: { areaColor: '#EAEAEA', borderColor: '#D5D5D5' },
-    emphasis: { disabled: true }
+    zoom: 2.2,
+    center: [118, 22],
+    itemStyle: { areaColor: '#EFEFEA', borderColor: '#D5D5D5', borderWidth: 0.5 },
+    emphasis: { disabled: true },
+    select: { disabled: true }
   },
   series: [
     {
       type: 'lines',
       geoIndex: 0,
       coordinateSystem: 'geo',
-      data: [
-        { coords: route[0].coords, lineStyle: { color: '#E8A87C', width: 2, curveness: 0.2 } },
-        { coords: route[1].coords, lineStyle: { color: '#85C1E9', width: 2, curveness: 0.1 } },
-        { coords: route[2].coords, lineStyle: { color: '#48C9B0', width: 3, curveness: 0.15 } },
-        { coords: route[3].coords, lineStyle: { color: '#E8A87C', width: 2, curveness: 0.1 } },
-        { coords: route[4].coords, lineStyle: { color: '#FF8C69', width: 2, curveness: 0.2 } }
-      ],
-      effect: { show: true, period: 4, symbol: 'circle', symbolSize: 6, color: '#FF8C69', trailLength: 0.3 },
-      lineStyle: { width: 2, opacity: 0.7, type: 'solid' },
+      data: route.map(r => ({
+        coords: r.coords,
+        lineStyle: { color: r.color, width: r.w, curveness: 0.15, opacity: 0.75 }
+      })),
+      effect: {
+        show: true, period: 6, symbol: 'circle',
+        symbolSize: 7, color: '#FF8C69', trailLength: 0.25, shadowBlur: 0
+      },
       z: 10
     },
     {
@@ -945,10 +978,42 @@ mapChart.setOption({
       coordinateSystem: 'geo',
       data: Object.entries(cityCoords).map(([name, coord]) => ({
         name, value: coord,
-        itemStyle: { color: name === '亚庇' ? '#48C9B0' : name === '澳门' ? '#85C1E9' : name === '杭州' ? '#E8A87C' : '#FF8C69', shadowBlur: 12, shadowColor: name === '亚庇' ? '#48C9B0' : name === '澳门' ? '#85C1E9' : name === '杭州' ? '#E8A87C' : '#FF8C69' },
-        label: { show: true, formatter: '{b}', fontSize: 12, fontWeight: 600, color: '#2A2A2A', fontFamily: '"Noto Sans SC",sans-serif', position: 'bottom', offset: [0, 8] }
+        itemStyle: {
+          color: CITY_COLORS_MAP[name],
+          shadowBlur: 18,
+          shadowColor: CITY_COLORS_MAP[name],
+          borderColor: '#fff',
+          borderWidth: 2
+        },
+        symbolSize: [14, 14]
       })),
+      label: {
+        show: true,
+        formatter: '{b}',
+        fontSize: 13, fontWeight: 700,
+        color: '#fff',
+        fontFamily: '"Noto Sans SC",sans-serif',
+        position: 'inside',
+        textShadowBlur: 2,
+        textShadowColor: 'rgba(0,0,0,0.5)'
+      },
       z: 20
+    },
+    // 外圈光晕效果
+    {
+      type: 'scatter',
+      coordinateSystem: 'geo',
+      data: Object.entries(cityCoords).map(([name, coord]) => ({
+        name, value: coord,
+        itemStyle: {
+          color: 'transparent',
+          borderColor: CITY_COLORS_MAP[name],
+          borderWidth: 2,
+          shadowBlur: 0
+        },
+        symbolSize: [28, 28]
+      })),
+      z: 15
     }
   ]
 });
