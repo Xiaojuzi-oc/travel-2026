@@ -128,14 +128,62 @@
     }
     .route-arrow { color: var(--text-dim); font-size: 18px; }
 
-    /* 路线地图（静态SVG） */
+    /* 路线地图（SVG + CSS浮层城市节点） */
     .route-map {
       position: relative;
       max-width: 900px;
-      margin: 0 auto 8px;
-      padding: 0 24px;
+      margin: 0 auto;
     }
-    .route-map svg { width: 100%; height: auto; display: block; }
+    .route-map > svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+    /* 城市节点浮层 */
+    .map-city {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transform: translate(-50%, -50%);
+    }
+    .map-city-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .map-city-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      font-family: 'Noto Sans SC', sans-serif;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .map-city-date {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 1px 6px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .map-city.sz  { top: 43.5%; left: 15.5%; }
+    .map-city.sz  .map-city-dot   { background: #FF8C69; }
+    .map-city.sz  .map-city-label  { background: #FF8C69; }
+    .map-city.sz  .map-city-date   { background: rgba(255,140,105,0.15); color: #D4634A; }
+    .map-city.hz  { top: 38.2%; left: 25.5%; }
+    .map-city.hz  .map-city-dot   { background: #E8A87C; }
+    .map-city.hz  .map-city-label  { background: #E8A87C; }
+    .map-city.hz  .map-city-date   { background: rgba(232,168,124,0.15); color: #b07840; }
+    .map-city.mo  { top: 55.3%; left: 51.1%; }
+    .map-city.mo  .map-city-dot   { background: #85C1E9; }
+    .map-city.mo  .map-city-label  { background: #85C1E9; }
+    .map-city.mo  .map-city-date   { background: rgba(133,193,233,0.15); color: #2980B9; }
+    .map-city.kk  { top: 81.6%; left: 77.8%; }
+    .map-city.kk  .map-city-dot   { background: #48C9B0; }
+    .map-city.kk  .map-city-label  { background: #48C9B0; }
+    .map-city.kk  .map-city-date   { background: rgba(72,201,176,0.15); color: #1A8A6F; }
 
     /* 地图图例 */
     .map-legend {
@@ -180,10 +228,10 @@
       height: 140px;
       border-radius: 50%;
       background: conic-gradient(
-        var(--sz) 0deg 45deg,
-        var(--hz) 45deg 90deg,
-        var(--kk) 90deg 252deg,
-        var(--mo) 252deg 360deg
+        #FF8C69 0deg 36deg,
+        #E8A87C 36deg 72deg,
+        #48C9B0 72deg 252deg,
+        #85C1E9 252deg 360deg
       );
       position: relative;
       flex-shrink: 0;
@@ -205,32 +253,32 @@
     .pie-legend-label { color: var(--text-muted); }
     .pie-legend-val { font-weight: 700; margin-left: auto; padding-left: 16px; }
 
-    /* 甘特图 — CSS实现 */
-    .gantt-wrap { overflow-x: auto; }
-    .gantt-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .gantt-table th {
-      text-align: left;
-      font-weight: 600;
-      color: var(--text-muted);
-      font-size: 11px;
-      padding: 4px 6px;
-      border-bottom: 2px solid var(--border);
-    }
-    .gantt-table td { padding: 5px 6px; vertical-align: middle; }
-    .gantt-day { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); white-space: nowrap; }
-    .gantt-slots { display: flex; gap: 3px; align-items: center; }
-    .gantt-slot {
-      width: 24px;
-      height: 20px;
-      border-radius: 4px;
+    /* 每日行程类型 */
+    .day-type-list { display: flex; flex-direction: column; gap: 8px; }
+    .day-type-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      font-size: 13px;
     }
-    .slot-yes { background: var(--coral-light); color: var(--coral-dark); }
-    .slot-no { background: var(--bg); color: var(--text-dim); }
+    .day-type-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 36px;
+      flex-shrink: 0;
+    }
+    .day-type-tags { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+    .day-type-tag {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
 
     /* ── TIMELINE ── */
     .timeline { position: relative; }
@@ -473,62 +521,55 @@
       <span class="city-chip" style="background:var(--sz)">🏠 苏州</span>
     </div>
 
-    <!-- 静态SVG路线图 -->
+<!-- SVG路线图（色值写死）+ CSS浮层城市节点 -->
     <div class="route-map">
-      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
-        <!-- 地图底色 -->
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg">
         <rect width="900" height="380" fill="#EFEFEA" rx="12"/>
-        <!-- 中国沿海轮廓（简化） -->
         <path d="M 80 80 Q 200 60 300 90 Q 400 110 480 140 Q 530 160 560 200 Q 590 240 570 270 Q 550 300 510 310 Q 480 315 450 305" fill="none" stroke="#D5D5D5" stroke-width="1"/>
-        <!-- 亚庇标记 -->
-        <circle cx="700" cy="310" r="6" fill="var(--kk)" opacity="0.2"/>
-        <circle cx="700" cy="310" r="14" fill="none" stroke="var(--kk)" stroke-width="1.5" opacity="0.4"/>
-        <!-- 城市节点 -->
-        <circle cx="140" cy="165" r="10" fill="var(--sz)" stroke="#fff" stroke-width="3"/>
-        <circle cx="230" cy="145" r="10" fill="var(--hz)" stroke="#fff" stroke-width="3"/>
-        <circle cx="460" cy="210" r="10" fill="var(--mo)" stroke="#fff" stroke-width="3"/>
-        <circle cx="700" cy="310" r="12" fill="var(--kk)" stroke="#fff" stroke-width="3"/>
-        <!-- 城市标签 -->
+        <circle cx="140" cy="165" r="10" fill="#FF8C69" stroke="#fff" stroke-width="3"/>
+        <circle cx="230" cy="145" r="10" fill="#E8A87C" stroke="#fff" stroke-width="3"/>
+        <circle cx="460" cy="210" r="10" fill="#85C1E9" stroke="#fff" stroke-width="3"/>
+        <circle cx="700" cy="310" r="12" fill="#48C9B0" stroke="#fff" stroke-width="3"/>
         <text x="140" y="155" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">苏州</text>
         <text x="230" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">杭州</text>
         <text x="460" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">澳门</text>
         <text x="700" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Noto Sans SC',sans-serif">亚庇</text>
-        <!-- 坐标标注 -->
-        <text x="140" y="188" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">31.3°N</text>
-        <text x="230" y="168" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">30.3°N</text>
-        <text x="460" y="233" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">22.2°N</text>
-        <text x="700" y="333" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="'JetBrains Mono',monospace">6.0°N</text>
-        <!-- 航线弧线 -->
-        <path d="M 150 165 Q 185 140 230 145" fill="none" stroke="var(--hz)" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
-        <path d="M 240 148 Q 350 120 458 205" fill="none" stroke="var(--mo)" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
-        <path d="M 470 213 Q 580 240 698 308" fill="none" stroke="var(--kk)" stroke-width="3" stroke-dasharray="6,4" opacity="0.8"/>
-        <path d="M 710 310 Q 500 200 240 145" fill="none" stroke="var(--hz)" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
-        <path d="M 230 148 Q 185 155 140 165" fill="none" stroke="var(--sz)" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
-        <!-- 航班动画箭头 -->
-        <polygon points="0,-4 8,0 0,4" fill="var(--kk)" opacity="0.9">
+        <text x="140" y="188" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">31.3N</text>
+        <text x="230" y="168" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">30.3N</text>
+        <text x="460" y="233" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">22.2N</text>
+        <text x="700" y="333" text-anchor="middle" font-size="10" fill="#6B6B6B" font-family="'JetBrains Mono',monospace">6.0N</text>
+        <path d="M 150 165 Q 185 140 230 145" fill="none" stroke="#E8A87C" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 240 148 Q 350 120 458 205" fill="none" stroke="#85C1E9" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 470 213 Q 580 240 698 308" fill="none" stroke="#48C9B0" stroke-width="3" stroke-dasharray="6,4" opacity="0.8"/>
+        <path d="M 710 310 Q 500 200 240 145" fill="none" stroke="#E8A87C" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+        <path d="M 230 148 Q 185 155 140 165" fill="none" stroke="#FF8C69" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+        <polygon points="0,-4 8,0 0,4" fill="#48C9B0" opacity="0.9">
           <animateMotion dur="3s" repeatCount="indefinite" path="M 470 213 Q 580 240 698 308"/>
         </polygon>
-        <polygon points="0,-3 6,0 0,3" fill="var(--mo)" opacity="0.8">
+        <polygon points="0,-3 6,0 0,3" fill="#85C1E9" opacity="0.8">
           <animateMotion dur="2.5s" repeatCount="indefinite" path="M 240 148 Q 350 120 458 205"/>
         </polygon>
-        <!-- 抵达日期标注 -->
-        <rect x="122" y="172" width="36" height="16" rx="8" fill="var(--sz)" opacity="0.15"/>
-        <text x="140" y="184" text-anchor="middle" font-size="10" fill="var(--coral-dark)" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
-        <rect x="212" y="152" width="36" height="16" rx="8" fill="var(--hz)" opacity="0.15"/>
-        <text x="230" y="164" text-anchor="middle" font-size="10" fill="var(--hz)" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
-        <rect x="442" y="217" width="36" height="16" rx="8" fill="var(--mo)" opacity="0.15"/>
-        <text x="460" y="229" text-anchor="middle" font-size="10" fill="var(--mo)" font-weight="700" font-family="'JetBrains Mono',monospace">07-04</text>
-        <rect x="682" y="317" width="36" height="16" rx="8" fill="var(--kk)" opacity="0.15"/>
-        <text x="700" y="329" text-anchor="middle" font-size="10" fill="var(--kk)" font-weight="700" font-family="'JetBrains Mono',monospace">07-06</text>
+        <rect x="122" y="172" width="36" height="16" rx="8" fill="rgba(255,140,105,0.15)"/>
+        <text x="140" y="184" text-anchor="middle" font-size="10" fill="#D4634A" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
+        <rect x="212" y="152" width="36" height="16" rx="8" fill="rgba(232,168,124,0.15)"/>
+        <text x="230" y="164" text-anchor="middle" font-size="10" fill="#b07840" font-weight="700" font-family="'JetBrains Mono',monospace">07-03</text>
+        <rect x="442" y="217" width="36" height="16" rx="8" fill="rgba(133,193,233,0.15)"/>
+        <text x="460" y="229" text-anchor="middle" font-size="10" fill="#2980B9" font-weight="700" font-family="'JetBrains Mono',monospace">07-04</text>
+        <rect x="682" y="317" width="36" height="16" rx="8" fill="rgba(72,201,176,0.15)"/>
+        <text x="700" y="329" text-anchor="middle" font-size="10" fill="#1A8A6F" font-weight="700" font-family="'JetBrains Mono',monospace">07-06</text>
       </svg>
+      <div class="map-city sz"><div class="map-city-dot"></div><div class="map-city-label">苏州</div><div class="map-city-date">07-03</div></div>
+      <div class="map-city hz"><div class="map-city-dot"></div><div class="map-city-label">杭州</div><div class="map-city-date">07-03</div></div>
+      <div class="map-city mo"><div class="map-city-dot"></div><div class="map-city-label">澳门</div><div class="map-city-date">07-04</div></div>
+      <div class="map-city kk"><div class="map-city-dot"></div><div class="map-city-label">亚庇</div><div class="map-city-date">07-06</div></div>
     </div>
 
     <div class="map-legend">
-      <span class="legend-item"><span class="legend-dot" style="background:var(--sz)"></span>苏州</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--hz)"></span>杭州</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--mo)"></span>澳门</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--kk)"></span>亚庇</span>
-      <span class="legend-item" style="color:var(--text-muted);font-size:12px;">-- 航线 · 动画飞行动效</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#FF8C69"></span>苏州</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#E8A87C"></span>杭州</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#85C1E9"></span>澳门</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#48C9B0"></span>亚庇</span>
+      <span class="legend-item" style="color:#6B6B6B;font-size:12px">-- 航线 · 动画飞行动效</span>
     </div>
   </div>
 </section>
@@ -567,78 +608,66 @@
           </div>
         </div>
       </div>
-      <div class="stats-card">
-        <h3>每日行程密度</h3>
-        <div class="gantt-wrap">
-          <table class="gantt-table">
-            <thead>
-              <tr>
-                <th>日期</th>
-                <th>🌅上午</th>
-                <th>☀️中午</th>
-                <th>🌇下午</th>
-                <th>🌙晚上</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="gantt-day">07-03</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-04</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-05</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-06</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-07</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-08</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-09</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-              <tr>
-                <td class="gantt-day">07-10</td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-                <td><div class="gantt-slots"><div class="gantt-slot slot-yes">■</div></div></td>
-              </tr>
-            </tbody>
-          </table>
+       <div class="stats-card">
+        <h3>每日行程类型</h3>
+        <div class="day-type-list">
+          <div class="day-type-row">
+            <span class="day-type-date">07-03</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#FF8C69">🚗 自驾</span>
+              <span class="day-type-tag" style="background:#E8A87C">🏨 入住</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-04</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#85C1E9">✈️ 航班</span>
+              <span class="day-type-tag" style="background:#6B6B6B">🏰 自由行</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-05</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#6B6B6B">🏰 自由行</span>
+              <span class="day-type-tag" style="background:#ABABAB">🌿 待细化</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-06</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#D4634A">🚌 跨境大巴</span>
+              <span class="day-type-tag" style="background:#85C1E9">✈️ 航班</span>
+              <span class="day-type-tag" style="background:#48C9B0">🌅 日落</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-07</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#48C9B0">🏛️ 城市游</span>
+              <span class="day-type-tag" style="background:#1A8A6F">🌳 红树林</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-08</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#48C9B0">🚤 跳岛</span>
+              <span class="day-type-tag" style="background:#1ABC9C">🏖️ 度假村</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-09</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#48C9B0">🎣 海钓</span>
+              <span class="day-type-tag" style="background:#1ABC9C">🏖️ 躺平</span>
+            </div>
+          </div>
+          <div class="day-type-row">
+            <span class="day-type-date">07-10</span>
+            <div class="day-type-tags">
+              <span class="day-type-tag" style="background:#85C1E9">✈️ 返程</span>
+              <span class="day-type-tag" style="background:#FF8C69">🚗 自驾</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
